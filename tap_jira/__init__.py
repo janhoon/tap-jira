@@ -51,7 +51,7 @@ def discover():
     catalog = Catalog([])
     for stream in streams_.ALL_STREAMS:
         schema = Schema.from_dict(load_schema(stream.tap_stream_id))
-        fields = args.config.get("fields").get(stream.tap_stream_id)
+        fields = args.config.get("fields", {}).get(stream.tap_stream_id, [])
 
         if len(fields) > 0:
             for field in fields:

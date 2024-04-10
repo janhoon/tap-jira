@@ -305,7 +305,7 @@ class Issues(Stream):
         start_date = last_updated.astimezone(pytz.timezone(timezone)).strftime("%Y-%m-%d %H:%M")
 
         project_key = Context.config.get("project_key")
-        fields = Context.config.get("fields", [])
+        fields = Context.config.get("fields", {}).get(self.tap_stream_id, [])
 
         jql = ""
         if start_date:
