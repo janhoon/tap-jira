@@ -60,7 +60,7 @@ def discover():
                 for field in fields:
                     fields_props_schema[field] = Schema(["null", "string"])
 
-        schema.properties["fields"].properties = fields_props_schema
+            schema.properties["fields"].properties = fields_props_schema
 
         mdata = generate_metadata(stream, schema)
 
