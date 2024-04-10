@@ -53,14 +53,14 @@ def discover():
         schema = Schema.from_dict(load_schema(stream.tap_stream_id))
         fields = args.config.get("fields", {}).get(stream.tap_stream_id, [])
 
+        fields_props_schema = schema.properties.get("fields").properties.copy()
+        # print(fields_schema.properties)
+
         if len(fields) > 0:
             for field in fields:
-                schema.properties.fields.properties[field] = {
-                  "type": [
-                    "null",
-                    "string"
-                  ],
-                }
+                fields_props_schema[field] = Schema(["null", "string"])
+
+        schema.properties["fields"].properties = fields_props_schema
 
         mdata = generate_metadata(stream, schema)
 
