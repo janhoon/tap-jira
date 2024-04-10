@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import json
 import singer
 from singer import utils
 from singer import metadata
@@ -22,14 +21,15 @@ REQUIRED_CONFIG_KEYS_HOSTED = ["start_date",
                                "password",
                                "base_url",
                                "user_agent"]
+EXTRA_ARGS = ["project_key"]
 
 
 def get_args():
     unchecked_args = utils.parse_args([])
     if 'username' in unchecked_args.config.keys():
-        return utils.parse_args(REQUIRED_CONFIG_KEYS_HOSTED)
+        return utils.parse_args(REQUIRED_CONFIG_KEYS_HOSTED + EXTRA_ARGS)
 
-    return utils.parse_args(REQUIRED_CONFIG_KEYS_CLOUD)
+    return utils.parse_args(REQUIRED_CONFIG_KEYS_CLOUD + EXTRA_ARGS)
 
 
 def get_abs_path(path):
