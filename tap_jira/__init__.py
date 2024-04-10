@@ -53,9 +53,8 @@ def discover():
         schema = Schema.from_dict(load_schema(stream.tap_stream_id))
         fields = args.config.get("fields", {}).get(stream.tap_stream_id, [])
 
-        if fields.contains(stream.tap_stream_id):
+        if stream.tap_stream_id in fields:
             fields_props_schema = schema.properties.get("fields").properties.copy()
-            # print(fields_schema.properties)
 
             if len(fields) > 0:
                 for field in fields:
