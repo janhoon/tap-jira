@@ -21,7 +21,7 @@ REQUIRED_CONFIG_KEYS_HOSTED = ["start_date",
                                "password",
                                "base_url",
                                "user_agent"]
-EXTRA_ARGS = ["project_key"]
+EXTRA_ARGS = ["project_key", "fields"]
 
 
 def get_args():
@@ -46,9 +46,21 @@ def load_schema(tap_stream_id):
 
 
 def discover():
+    args = get_args()
+
     catalog = Catalog([])
     for stream in streams_.ALL_STREAMS:
         schema = Schema.from_dict(load_schema(stream.tap_stream_id))
+        fields = args.config.get("fields").get(stream.tap_stream_id)
+
+        if len(fields) > 0:
+            for field in fields:
+                schema.properties.fields.properties[field] = {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                }
 
         mdata = generate_metadata(stream, schema)
 

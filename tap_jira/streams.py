@@ -305,6 +305,7 @@ class Issues(Stream):
         start_date = last_updated.astimezone(pytz.timezone(timezone)).strftime("%Y-%m-%d %H:%M")
 
         project_key = Context.config.get("project_key")
+        fields = Context.config.get("fields", [])
 
         jql = ""
         if start_date:
@@ -312,7 +313,12 @@ class Issues(Stream):
         if project_key != "":
             jql = " AND ".join([jql, "project = {}".format(project_key)])
         jql = jql + " ORDER BY updated ASC"
-        params = {"fields": "*all",
+
+        fields = "*all"
+        if len(fields) > 0:
+            fields = ",".join(fields)
+
+        params = {"fields": fields,
                   "expand": "changelog,transitions",
                   "validateQuery": "strict",
                   "jql": jql}
